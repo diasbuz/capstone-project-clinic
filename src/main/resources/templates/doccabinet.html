@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/cabinet.css">
+</head>
+<body>
+    <header>
+        <h1>My Profile</h1>
+    </header>
+    <nav>
+        <ul id="nav-buttons">
+            <li><a href="/">Home</a></li>
+            <li th:if="${role != 'doctor'}"><a href="/services">Medical Services</a></li>
+            <li><a href="/specialists">Specialists</a></li>
+            <li><a href="/reviews">Reviews</a></li>
+            <li style="float: right;"><a id="logout" href="/logout">Log Out</a></li>
+            <li style="float: right;"><a id="profile" href="/profile">My Profile</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="profile-section">
+            <h2>Update Personal Information</h2>
+            <form th:action="@{/update-profile}" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" th:value="${user.name}" required>
+                
+                <label for="phone">Phone:</label>
+                <input type="text" id="phone" name="phone" th:value="${user.phone}" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" th:value="${user.email}" required>
+                
+                <button type="submit">Update</button>
+            </form>
+
+            <div th:if="${role == 'doctor'}">
+                <h2>Create Appointments</h2>
+                <form th:action="@{/create-appointment}" method="post">
+                    <label for="appointment-date">Date:</label>
+                    <input type="date" id="appointment-date" name="appointmentDate" required>
+                    
+                    <label for="appointment-time">Time:</label>
+                    <input type="time" id="appointment-time" name="appointmentTime" required>
+                    
+                    <button type="submit">Create Appointment</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+</body>
+</html>

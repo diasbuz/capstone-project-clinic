@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Reviews - Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/reviews.css">
+</head>
+<body>
+    <header>
+        <h1>Clinic Reviews</h1>
+    </header>
+    <nav>
+        <ul id="nav-buttons">
+            <li><a href="/">Home</a></li>
+            <li><a href="/services">Medical Services</a></li>
+            <li><a href="/specialists">Specialists</a></li>
+            <li><a href="/reviews">Reviews</a></li>
+            <li style="float: right;"><a id="logout" href="/logout">Log Out</a></li>
+            <li style="float: right;"><a id="profile" href="/profile">My Profile</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="reviews-section">
+            <h2>User Reviews</h2>
+            <div class="reviews-container">
+                <div th:each="review : ${reviews}" class="review">
+                    <h3 th:text="${review.user.name}">User Name</h3>
+                    <p th:text="${review.comment}">This is a review comment.</p>
+                    <span th:text="${review.date}">Date of Review</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+</body>
+</html>

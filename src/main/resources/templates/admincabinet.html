@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/cabinet.css">
+</head>
+<body>
+    <header>
+        <h1>My Profile</h1>
+    </header>
+    <nav>
+        <ul id="nav-buttons">
+            <li><a href="/">Home</a></li>
+            <li th:if="${role != 'doctor'}"><a href="/services">Medical Services</a></li>
+            <li><a href="/specialists">Specialists</a></li>
+            <li><a href="/reviews">Reviews</a></li>
+            <li style="float: right;"><a id="logout" href="/logout">Log Out</a></li>
+            <li style="float: right;"><a id="profile" href="/profile">My Profile</a></li>
+        </ul>
+    </nav>
+    <main>
+
+        <section class="admin-section" th:if="${role == 'admin'}">
+            <h2>Manage Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${users}">
+                        <td th:text="${user.name}"></td>
+                        <td th:text="${user.phone}"></td>
+                        <td th:text="${user.email}"></td>
+                        <td th:text="${user.role}"></td>
+                        <td>
+                            <form th:action="@{/delete-user}" method="post">
+                                <input type="hidden" name="userId" th:value="${user.id}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Add New Doctor</h2>
+            <form th:action="@{/add-doctor}" method="post">
+                <label for="doctor-name">Name:</label>
+                <input type="text" id="doctor-name" name="name" required>
+                
+                <label for="speciality">Specialty:</label>
+                <select id="speciality" name="speciality" required>
+                    <option th:each="speciality : ${specialities}" th:value="${speciality}" th:text="${speciality}"></option>
+                </select>
+                
+                <button type="submit">Add Doctor</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+</body>
+</html>

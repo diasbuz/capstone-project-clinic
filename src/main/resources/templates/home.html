@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/home.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to Online Clinic</h1>
+    </header>
+    <nav>
+        <ul id="nav-buttons">
+            <li><a href="/">Home</a></li>
+            <li th:if="${role != 'doctor'}"><a href="/services">Medical Services</a></li>
+            <li><a href="/specialists">Specialists</a></li>
+            <li><a href="/reviews">Reviews</a></li>
+            <li style="float: right;" th:if="${role == null}"><a id="login" href="/login">Log In</a></li>
+            <li style="float: right;" th:if="${role != null}"><a id="profile" href="/profile">My Profile</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section class="background-info">
+            <h2>About Our Clinic</h2>
+            <p>Welcome to our online clinic. We offer a wide range of medical services and have a team of specialists ready to assist you. Register today to access your profile and manage your health online.</p>
+            <h3>Our Services</h3>
+            <p>We provide a variety of services including general consultations, specialist appointments, telemedicine, and prescription management. Our goal is to provide accessible and quality healthcare from the comfort of your home.</p>
+            <h3>Meet Our Specialists</h3>
+            <p>Our team consists of experienced professionals in various fields such as cardiology, dermatology, pediatrics, and more. They are dedicated to providing the best care and advice to meet your health needs.</p>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+</body>
+</html>

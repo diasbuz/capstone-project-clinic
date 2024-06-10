@@ -1,0 +1,10 @@
+version: '2'
+services:
+  capstone-project-clinic:
+    image: postgres:16.3
+    environment:
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgresdb
+    ports:
+      - '5432:5432'

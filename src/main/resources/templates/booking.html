@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/booking.css">
+</head>
+<body>
+    <header>
+        <h1>Book Appointment with Dr. <span th:text="${doctor.name}">[Doctor Name]</span></h1>
+    </header>
+    <main>
+        <section class="booking-section">
+            <h2>Select Date and Time</h2>
+            <form th:action="@{/confirm-booking}" method="post" onsubmit="return showConfirmationPopup(event)">
+                <label for="appointment-date">Date (dd/mm/yyyy):</label>
+                <select id="appointment-date" name="appointmentDate" required onchange="fetchAvailableTimes()">
+                    <!-- Options will be populated dynamically -->
+                </select>
+                
+                <label for="appointment-time">Time:</label>
+                <select id="appointment-time" name="appointmentTime" required>
+                    <!-- Options will be populated dynamically -->
+                </select>
+                
+                <button type="submit">Confirm Booking</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+
+    <!-- Confirmation Popup -->
+    <div id="confirmation-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>Confirm Your Booking</h2>
+            <p id="confirmation-details"></p>
+            <button onclick="confirmBooking()">Confirm</button>
+            <button onclick="closePopup()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to fetch available dates
+        function fetchAvailableDates() {
+            const dateSelect = document.getElementById('appointment-date');
+            
+            // Clear existing options
+            dateSelect.innerHTML = '';
+
+            // Fetch available dates
+            fetch('/api/available-dates')
+                .then(response => response.json())
+                .then(dates => {
+                    dates.forEach(date => {
+                        const option = document.createElement('option');
+                        option.value = date.value; // Assume API returns dates in 'yyyy-mm-dd' format
+                        option.textContent = `${date.display} (${date.dayOfWeek})`; // Assume API provides display and dayOfWeek
+                        dateSelect.appendChild(option);
+                    });
+                });
+        }
+
+        // Function to fetch available times for the selected date
+        function fetchAvailableTimes() {
+            const dateSelect = document.getElementById('appointment-date');
+            const timeSelect = document.getElementById('appointment-time');
+            const selectedDate = dateSelect.value;
+
+            // Clear existing options
+            timeSelect.innerHTML = '';
+
+            if (selectedDate) {
+                // Fetch available times for the selected date
+                fetch(`/api/available-times?date=${selectedDate}`)
+                    .then(response => response.json())
+                    .then(times => {
+                        times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                    });
+            }
+        }
+
+        // Fetch available dates when the page loads
+        document.addEventListener('DOMContentLoaded', fetchAvailableDates);
+
+        function showConfirmationPopup(event) {
+            event.preventDefault();
+            const dateSelect = document.getElementById('appointment-date');
+            const timeSelect = document.getElementById('appointment-time');
+            const date = dateSelect.options[dateSelect.selectedIndex].text;
+            const time = timeSelect.value;
+            document.getElementById('confirmation-details').textContent = `You are about to book an appointment on ${date} at ${time}.`;
+            document.getElementById('confirmation-popup').style.display = 'block';
+        }
+
+        function confirmBooking() {
+            document.querySelector('.booking-section form').submit();
+        }
+
+        function closePopup() {
+            document.getElementById('confirmation-popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

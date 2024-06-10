@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Selection - Online Clinic</title>
+    <link rel="stylesheet" href="../static/css/services.css">
+</head>
+<body>
+    <header>
+        <h1>Doctor Selection</h1>
+    </header>
+    <main>
+        <section class="doctor-selection-section">
+            <h2>Select a Doctor</h2>
+            <form method="get" action="/doctors" class="search-form">
+                <label for="doctorName">Doctor Name:</label>
+                <input type="text" id="doctorName" name="doctorName" placeholder="e.g. John Doe">
+
+                <label for="specialization">Specialization:</label>
+                <select id="specialization" name="specialization">
+                    <option value="">All Specializations</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <!-- Add more specializations as needed -->
+                </select>
+                
+                <label for="Rating">Rating:</label>
+                <input type="number" step="0.1" id="Rating" name="Rating" placeholder="e.g. 4.5">
+
+                <button type="submit">Search</button>
+            </form>
+            <p th:if="${totalDoctors > 0}">Number of Doctors in Database: <span th:text="${totalDoctors}">0</span></p>
+            <div th:if="${totalDoctors > 0}" th:each="doctor : ${doctors}" class="doctor-panel">
+                <span th:text="${doctor.name}">Doctor Name</span>
+                <span th:text="'Rating: ' + ${doctor.rating}">Rating</span>
+                <span th:text="'Comments: ' + ${doctor.commentsCount}">Comments</span>
+                <a th:href="'/booking/' + ${doctor.name.replace(' ', '-').toLowerCase()}">View comments</a>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Contact Us: </p>
+        <p>Phone: (123) 456-7890</p>
+        <p>Email: contact@onlineclinic.com</p>
+    </footer>
+</body>
+</html>
