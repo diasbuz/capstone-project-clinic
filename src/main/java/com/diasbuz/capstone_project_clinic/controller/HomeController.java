@@ -1,31 +1,32 @@
 package com.diasbuz.capstone_project_clinic.controller;
 
+import com.diasbuz.capstone_project_clinic.model.User;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
-    @GetMapping({"/", "/home"})
-    public String home(Authentication authentication, Model model) {
-        if (authentication != null && authentication.isAuthenticated()) {
-            String role = authentication.getAuthorities().iterator().next().getAuthority();
-            model.addAttribute("role", role.replace("ROLE_", "").toLowerCase());
+    @GetMapping(value = {"/", "/home"})
+    public String home(@AuthenticationPrincipal User user, Model model) {
+        if (user != null) {
+            model.addAttribute("role", user.getAuthorities().iterator().next().getAuthority());
         } else {
-            model.addAttribute("role", "guest");
+            model.addAttribute("role", null);
         }
         return "home";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
+    @GetMapping("/specialists")
+    public String specialists() {
+        return "specialists";
     }
 }

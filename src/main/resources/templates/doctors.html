@@ -1,35 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Selection - Online Clinic</title>
-    <link rel="stylesheet" href="../static/css/services.css">
+    <title>Doctors - Online Clinic</title>
+    <link rel="stylesheet" th:href="@{/styles/css/doctors.css}">
 </head>
 <body>
-    <header>
-        <h1>Doctor Selection</h1>
-    </header>
-    <main>
-        <section class="doctor-selection-section">
-            <h2>Select a Doctor</h2>
-            <div class="doctor-panel">
-                <h3>Dr. John Doe</h3>
-                <p>Rating: 4.5</p>
-                <a href="/booking/dr-john-doe">Book Appointment</a>
+<header>
+    <h1>Doctors</h1>
+</header>
+<nav>
+    <ul>
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/services}">Services</a></li>
+        <li><a th:href="@{/profile}">Profile</a></li>
+        <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+</nav>
+<main>
+    <section class="doctors-section">
+        <div class="background-info">
+            <h2>Doctors for Selected Service</h2>
+            <div th:each="doctor : ${doctors}">
+                <h3 th:text="${doctor.name}">Doctor Name</h3>
+                <p th:text="'Specialty: ' + ${doctor.service.name}">Specialty</p>
+                <p th:text="'Email: ' + ${doctor.email}">Email</p>
+                <p th:text="'Phone: ' + ${doctor.phone}">Phone</p>
+                <p th:text="'Rating: ' + ${doctor.rating}">Rating</p>
+                <a th:href="@{/${doctor.getUserId()}/booking}">View Doctors</a>
             </div>
-            <div class="doctor-panel">
-                <h3>Dr. Jane Smith</h3>
-                <p>Rating: 4.7</p>
-                <a href="/booking/dr-jane-smith">Book Appointment</a>
-            </div>
-            <!-- more doctors -->
-        </section>
-    </main>
-    <footer>
-        <p>Contact Us: </p>
-        <p>Phone: (123) 456-7890</p>
-        <p>Email: contact@onlineclinic.com</p>
-    </footer>
+        </div>
+    </section>
+</main>
+<footer>
+    <p>Contact Us:</p>
+    <p>Phone: (123) 456-7890</p>
+    <p>Email: contact@onlineclinic.com</p>
+</footer>
 </body>
 </html>

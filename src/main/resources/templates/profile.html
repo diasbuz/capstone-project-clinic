@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Online Clinic</title>
+    <link rel="stylesheet" th:href="@{/styles/css/cabinet.css}">
+</head>
+<body>
+<header>
+    <h1>My Profile</h1>
+</header>
+<nav>
+    <ul id="nav-buttons">
+        <li><a href="/">Home</a></li>
+        <li th:if="${role != 'ROLE_DOCTOR'}"><a href="/services">Medical Services</a></li>
+        <li><a href="/specialists">Specialists</a></li>
+        <li><a href="/reviews">Reviews</a></li>
+        <li style="float: right;"><a id="logout" href="/logout">Log Out</a></li>
+        <li style="float: right;"><a id="profile" href="/profile">My Profile</a></li>
+    </ul>
+</nav>
+<main>
+    <section class="profile-section">
+        <h2>Update Personal Information</h2>
+        <form th:action="@{/profile/update-profile}" method="post">
+            <input type="hidden" name="userId" th:value="${user.userId}">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Update</button>
+        </form>
+    </section>
+
+    <section class="admin-section" th:if="${role == 'ROLE_ADMIN'}">
+        <h2>Manage Users</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.phone}"></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.role}"></td>
+                <td>
+                    <form th:action="@{/delete-user}" method="post">
+                        <input type="hidden" name="userId" th:value="${user.userId}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+    <section class="profile-section" th:if="${role == 'ROLE_ADMIN'}">
+        <form th:action="@{/profile/add-doctor}" th:object="${user}" method="post">
+
+            <label class="username">Username:</label>
+            <input
+                    id="login"
+                    name="login"
+                    placeholder="Enter login"
+                    th:field="*{login}"
+                    type="text"
+                    required
+            />
+
+            <label class="form-label">Password</label>
+            <input
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    placeholder="Enter password"
+                    th:field="*{password}"
+                    type="password"
+                    required
+            />
+
+            <label class="service">Service</label>
+            <select id="service" name="service" class="form-control" required>
+                <option value="" disabled>Select Service</option>
+                <option th:each="service : ${services}"
+                        th:value="${service.getServiceId()}" th:text="${service.getName()}"></option>
+            </select>
+
+            <button type="submit">Add Doctor</button>
+        </form>
+    </section>
+
+    <section class="profile-section" th:if="${role == 'ROLE_DOCTOR'}">
+        <h2>Create Appointments</h2>
+        <form th:action="@{/profile/create-appointment}" method="post">
+            <label for="appointment-date">Date:</label>
+            <input type="date" id="appointment-date" name="appointmentDate" required>
+
+            <label for="appointment-time">Time:</label>
+            <input type="time" id="appointment-time" name="appointmentTime" required>
+
+            <button type="submit">Create Appointment</button>
+        </form>
+    </section>
+
+    <section class="profile-section" th:if="${role == 'ROLE_PATIENT'}">
+        <h2>My Appointments</h2>
+        <ul>
+            <li th:each="appointment : ${appointments}">
+                <span th:text="${appointment.date} + ' ' + ${appointment.time}"></span>
+            </li>
+        </ul>
+    </section>
+</main>
+<footer>
+    <p>Contact Us: </p>
+    <p>Phone: (123) 456-7890</p>
+    <p>Email: contact@onlineclinic.com</p>
+</footer>
+</body>
+</html>

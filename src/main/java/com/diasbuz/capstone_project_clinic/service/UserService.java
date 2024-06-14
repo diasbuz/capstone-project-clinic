@@ -1,14 +1,12 @@
 package com.diasbuz.capstone_project_clinic.service;
 
-import com.diasbuz.capstone_project_clinic.model.Doctor;
-import com.diasbuz.capstone_project_clinic.model.Patient;
 import com.diasbuz.capstone_project_clinic.model.User;
 import com.diasbuz.capstone_project_clinic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,35 +15,35 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByLogin(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 
-    public Doctor getCurrentDoctor() {
-        User currentUser = getCurrentUser();
-        if (currentUser instanceof Doctor) {
-            return (Doctor) currentUser;
-        } else {
-            throw new IllegalStateException("Current user is not a doctor");
-        }
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    public Patient getCurrentPatient() {
-        User currentUser = getCurrentUser();
-        if (currentUser instanceof Patient) {
-            return (Patient) currentUser;
-        } else {
-            throw new IllegalStateException("Current user is not a patient");
-        }
+    public User findById(Integer doctorId) {
+        return userRepository.findById(doctorId).orElse(null);
     }
 
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public void deleteById(Integer id) {
+        userRepository.deleteById(id);
     }
 
-    public Optional<User> findByLogin(String login) {
+    public User findByLogin(String login) {
         return userRepository.findByLogin(login);
+    }
+
+    public void updateUserInformation(Integer userId, String name, String phone, String email) {
+        userRepository.updateUserInfoById(userId, name, phone, email);
+    }
+
+    public List<User> findDoctorsByServiceId(Integer serviceId) {
+        return userRepository.findByServiceServiceId(serviceId);
     }
 }

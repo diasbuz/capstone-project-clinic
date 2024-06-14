@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Online Clinic</title>
-    <link rel="stylesheet" href="../static/css/register.css">
+    <link th:href="@{/styles/css/register.css}" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -12,22 +12,99 @@
     </header>
     <main>
         <section class="form-section">
-            <h2>Register</h2>
-            <form action="/register" method="post">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name">
+            <h2><a class="navbar-brand" th:href="@{/home}">Register</a></h2>
+            <form
+                        method="post"
+                        role="form"
+                        th:action="@{/register/save}"
+                        th:object="${user}"
+                >
+				
+				<div class="form-group">
+				<label class="username">Username:</label>
+                <input
+                                id="login"
+                                name="login"
+                                placeholder="Enter login"
+                                th:field="*{login}"
+                                type="text"
+                                required
+                        />
+				<p th:errors="*{login}" class="text-danger"
+                   th:if="${#fields.hasErrors('login')}"></p>
+				   
+				</div>
+				
+                <div class="form-group">
+				<label class="form-label">Password</label>
+                 <input
+                        class="form-control"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        th:field="*{password}"
+                        type="password"
+                        required
+                />
+                <p th:errors="*{password}" class="text-danger"
+                th:if="${#fields.hasErrors('password')}"></p>
+				</div>
                 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email">
+                <div class="form-group">
+                        <label class="form-label">Role</label>
+                        <select id="role" name="role" class="form-control" required>
+                            <option value="" disabled>Select Role</option>
+                            <option th:each="role : ${T(com.diasbuz.capstone_project_clinic.model.Roles).values()}"
+                                    th:value="${role}" th:text="${role.getRole}"></option>
+                        </select>
+                        <p th:errors="*{role}" class="text-danger"
+                           th:if="${#fields.hasErrors('role')}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Name</label>
+                        <input
+                                class="form-control"
+                                id="name"
+                                name="name"
+                                placeholder="Enter name"
+                                th:field="*{name}"
+                                type="text"
+                                required
+                        />
+                        <p th:errors="*{name}" class="text-danger"
+                           th:if="${#fields.hasErrors('name')}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Phone</label>
+                        <input
+                                class="form-control"
+                                id="phone"
+                                name="phone"
+                                placeholder="Enter phone"
+                                th:field="*{phone}"
+                                type="text"
+                                required
+                        />
+                        <p th:errors="*{phone}" class="text-danger"
+                           th:if="${#fields.hasErrors('phone')}"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email</label>
+                        <input
+                                class="form-control"
+                                id="email"
+                                name="email"
+                                placeholder="Enter email"
+                                th:field="*{email}"
+                                type="email"
+                                required
+                        />
+                        <p th:errors="*{email}" class="text-danger"
+                           th:if="${#fields.hasErrors('email')}"></p>
+                    </div>
                 
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username">
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
-                
-                <button type="register">Register</button>
-                <button type="login">Back to login page</button>
+                <button type="submit">Register</button>
+                <button><a type="login" th:href="@{/login}">Back to login page</a></button>
             </form>
         </section>
     </main>

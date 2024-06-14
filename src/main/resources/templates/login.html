@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Online Clinic</title>
-    <link rel="stylesheet" href="../static/css/login.css">
+    <link th:href="@{/styles/css/login.css}" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -12,16 +12,33 @@
     </header>
     <main>
         <section class="form-section">
-            <h2>Log In</h2>
-            <form action="/login" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username">
+            <h2><a class="navbar-brand" th:href="@{/home}">Log In</a></h2>
+            <form method="post"
+                  role="form"
+                  th:action="@{/login}"
+                  class="form-horizontal">
+                <label for="username">Username</label>
+                <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        class="form-control"
+                        placeholder="Enter Login"
+                        required
+                />
                 
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password">
+                <label for="password">Password</label>
+                <input
+                                    type="text"
+                                    id="password"
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="Enter password"
+                                    required
+                />
                 
                 <button type="login">Log In</button>
-                <button type="register">Register</button>
+                <button><a th:href="@{/register}">Register/Signup here</a></button>
             </form>
         </section>
     </main>

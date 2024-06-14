@@ -6,15 +6,21 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
+@Table(name = "services")
 @Data
 @NoArgsConstructor
 public class Service {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "service_id")
     private Integer serviceId;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "serviceId")
-    private List<Doctor> doctors;
+    @OneToMany(mappedBy = "service")
+    private List<User> doctors;
 }

@@ -3,26 +3,31 @@ package com.diasbuz.capstone_project_clinic.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.Date;
-import java.util.List;
 
 @Entity
+@Table(name = "appointments")
 @Data
 @NoArgsConstructor
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
     private Integer appointmentID;
 
     @ManyToOne
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
+    @JoinColumn(name = "doctor_id", nullable = false)
+    private User doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    @JoinColumn(name = "patient_id", nullable = false)
+    private User patient;
 
+    @Column(name = "date_time", nullable = false)
     private Date dateTime;
+
+    @Column(name = "status")
     private String status;
 }
+
+
