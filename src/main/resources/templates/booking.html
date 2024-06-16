@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Appointment - Online Clinic</title>
+    <title>Booking Confirmation - Online Clinic</title>
     <link rel="stylesheet" th:href="@{/styles/css/booking.css}">
 </head>
 <body>
@@ -12,18 +12,23 @@
 </header>
 <main>
     <section class="booking-section">
-        <h2>Select Date and Time</h2>
-        <form th:action="@{/doctors/confirm-booking}" method="post" onsubmit="return showConfirmationPopup(event)">
-            <input type="hidden" name="doctorId" th:value="${doctor.userId}">
 
-            <label for="appointment-date">Date (dd/mm/yyyy):</label>
-            <input type="date" id="appointment-date" name="appointmentDate" required>
+        <form th:action="@{/services/confirm-booking}" method="post">
 
-            <label for="appointment-time">Time:</label>
-            <input type="time" id="appointment-time" name="appointmentTime" required>
+            <label for="appointment">Available Appointments:</label>
 
-            <button type="submit">Confirm Booking</button>
-        </form>
+            <select id="appointment" name="appointmentId" required>
+                <option th:each="appointment : ${availableAppointments}"
+                        th:value="${appointment.getAppointmentID()}"
+                        th:text="${#temporals.format(appointment.dateTime, 'yyyy/MM/dd HH:mm EEEE')}">
+                </option>
+            </select>
+        <button type="submit" name="appointmentId">Book</button>
+    </div>
+    <input type="hidden" name="doctorId" th:value="${doctor.userId}" />
+    <input type="hidden" name="serviceId" th:value="${serviceId}" />
+</form>
+
     </section>
 </main>
 <footer>
@@ -31,33 +36,5 @@
     <p>Phone: (123) 456-7890</p>
     <p>Email: contact@onlineclinic.com</p>
 </footer>
-
-<!-- Confirmation Popup -->
-<div id="confirmation-popup" class="popup-overlay">
-    <div class="popup-content">
-        <h2>Confirm Your Booking</h2>
-        <p id="confirmation-details"></p>
-        <button onclick="confirmBooking()">Confirm</button>
-        <button onclick="closePopup()">Cancel</button>
-    </div>
-</div>
-
-<script>
-    function showConfirmationPopup(event) {
-        event.preventDefault();
-        const date = document.getElementById('appointment-date').value;
-        const time = document.getElementById('appointment-time').value;
-        document.getElementById('confirmation-details').textContent = `You are about to book an appointment on ${date} at ${time}.`;
-        document.getElementById('confirmation-popup').style.display = 'block';
-    }
-
-    function confirmBooking() {
-        document.querySelector('.booking-section form').submit();
-    }
-
-    function closePopup() {
-        document.getElementById('confirmation-popup').style.display = 'none';
-    }
-</script>
 </body>
 </html>

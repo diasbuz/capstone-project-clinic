@@ -46,4 +46,16 @@ public class UserService {
     public List<User> findDoctorsByServiceId(Integer serviceId) {
         return userRepository.findByServiceServiceId(serviceId);
     }
+
+    public List<User> findDoctors(String name, String specialization, Double rating) {
+        if (name == null && specialization == null && rating == null) {
+            return userRepository.findAllDoctors();
+        } else {
+            return userRepository.findFilteredDoctors(name, specialization, rating);
+        }
+    }
+
+    public List<User> findAllDoctors() {
+        return userRepository.findAllDoctors();
+    }
 }

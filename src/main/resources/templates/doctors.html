@@ -28,7 +28,7 @@
                 <p th:text="'Email: ' + ${doctor.email}">Email</p>
                 <p th:text="'Phone: ' + ${doctor.phone}">Phone</p>
                 <p th:text="'Rating: ' + ${doctor.rating}">Rating</p>
-                <a th:href="@{/${doctor.getUserId()}/booking}">View Doctors</a>
+                <a th:href="@{/services/doctors/{serviceId}/{doctorId}/booking(serviceId=${serviceId}, doctorId=${doctor.userId})}">Book an appointment</a>
             </div>
         </div>
     </section>
@@ -40,3 +40,4 @@
 </footer>
 </body>
 </html>
+

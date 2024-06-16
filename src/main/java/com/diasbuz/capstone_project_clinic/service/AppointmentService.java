@@ -7,6 +7,7 @@ import com.diasbuz.capstone_project_clinic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -31,16 +32,25 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
-    public void bookAppointment(Integer doctorId, Integer patientId, Date dateTime) {
+    public void bookAppointment(Integer appointmentId, Integer patientId) {
+        Appointment appointment = appointmentRepository.findById(appointmentId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid appointment ID"));
+
+        if ("available".equals(appointment.getStatus())) {
+            User patient = userRepository.findById(patientId)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid patient ID"));
+
+            appointment.setStatus("booked");
+            appointment.setPatient(patient);
+            appointmentRepository.save(appointment);
+        } else {
+            throw new IllegalStateException("Appointment is not available.");
+        }
+    }
+
+    public List<Appointment> getAvailableAppointments(Integer doctorId) {
         User doctor = userRepository.findById(doctorId).orElseThrow(() -> new IllegalArgumentException("Invalid doctor ID"));
-        User patient = userRepository.findById(patientId).orElseThrow(() -> new IllegalArgumentException("Invalid patient ID"));
 
-        Appointment appointment = new Appointment();
-        appointment.setDoctor(doctor);
-        appointment.setPatient(patient);
-        appointment.setDateTime(dateTime);
-        appointment.setStatus("Scheduled");
-
-        appointmentRepository.save(appointment);
+        return appointmentRepository.findByDoctorAndStatus(doctor, "available");
     }
 }

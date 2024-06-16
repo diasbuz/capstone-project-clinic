@@ -35,35 +35,35 @@
         </form>
     </section>
 
-    <section class="admin-section" th:if="${role == 'ROLE_ADMIN'}">
-        <h2>Manage Users</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.phone}"></td>
-                <td th:text="${user.email}"></td>
-                <td th:text="${user.role}"></td>
-                <td>
-                    <form th:action="@{/delete-user}" method="post">
-                        <input type="hidden" name="userId" th:value="${user.userId}">
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+<!--    <section class="admin-section" th:if="${role == 'ROLE_ADMIN'}">-->
+<!--        <h2>Manage Users</h2>-->
+<!--        <table>-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Phone</th>-->
+<!--                <th>Email</th>-->
+<!--                <th>Role</th>-->
+<!--                <th>Action</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr th:each="user : ${users}">-->
+<!--                <td th:text="${user.name}"></td>-->
+<!--                <td th:text="${user.phone}"></td>-->
+<!--                <td th:text="${user.email}"></td>-->
+<!--                <td th:text="${user.role}"></td>-->
+<!--                <td>-->
+<!--                    <form th:action="@{/delete-user}" method="post">-->
+<!--                        <input type="hidden" name="userId" th:value="${user.userId}">-->
+<!--                        <button type="submit">Delete</button>-->
+<!--                    </form>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--        </table>-->
 
-    </section>
+<!--    </section>-->
 
     <section class="profile-section" th:if="${role == 'ROLE_ADMIN'}">
         <form th:action="@{/profile/add-doctor}" th:object="${user}" method="post">
@@ -117,7 +117,7 @@
         <h2>My Appointments</h2>
         <ul>
             <li th:each="appointment : ${appointments}">
-                <span th:text="${appointment.date} + ' ' + ${appointment.time}"></span>
+                <span th:text="${appointment.dateTime}"></span>
             </li>
         </ul>
     </section>

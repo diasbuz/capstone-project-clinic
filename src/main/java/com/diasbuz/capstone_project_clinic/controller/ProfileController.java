@@ -8,12 +8,16 @@ import com.diasbuz.capstone_project_clinic.repository.ServiceRepository;
 import com.diasbuz.capstone_project_clinic.service.AppointmentService;
 import com.diasbuz.capstone_project_clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -57,7 +61,6 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-
     @PostMapping("/add-doctor")
     public String addDoctor(@ModelAttribute("user") User user, BindingResult result, Model model) {
         model.addAttribute("services", serviceRepository.findAll());
@@ -100,13 +103,20 @@ public class ProfileController {
     }
 
     @PostMapping("/create-appointment")
-    public String createAppointment(@ModelAttribute Appointment appointment, @AuthenticationPrincipal User doctor) {
+    public String createAppointment(@RequestParam("appointmentDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                                    @RequestParam("appointmentTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
+                                    @AuthenticationPrincipal User doctor) {
         if (!doctor.getRole().equals(Roles.ROLE_DOCTOR)) {
             return "redirect:/profile?error=Unauthorized";
         }
+
+        Appointment appointment = new Appointment();
         appointment.setDoctor(doctor);
+        appointment.setDateTime(LocalDateTime.of(date, time));
+        appointment.setStatus("available");
         appointmentService.save(appointment);
-        return "redirect:/profile/doctor/appointments";
+
+        return "redirect:/profile";
     }
 
     @GetMapping("/patient/appointments")
@@ -119,3 +129,4 @@ public class ProfileController {
         return "appointments";
     }
 }
+

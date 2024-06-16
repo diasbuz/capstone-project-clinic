@@ -3,6 +3,8 @@ package com.diasbuz.capstone_project_clinic.model;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,14 +22,12 @@ public class Appointment {
     private User doctor;
 
     @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
+    @JoinColumn(name = "patient_id", nullable = true)
     private User patient;
 
     @Column(name = "date_time", nullable = false)
-    private Date dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "status")
     private String status;
 }
-
-

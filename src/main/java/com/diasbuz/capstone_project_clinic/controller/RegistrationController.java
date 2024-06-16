@@ -22,7 +22,7 @@ public class RegistrationController {
     @GetMapping
     public String showRegistrationForm(Model model){
         User user = new User();
-        model.addAttribute("user", user); // Corrected the model attribute name to "user"
+        model.addAttribute("user", user);
         return "register";
     }
 

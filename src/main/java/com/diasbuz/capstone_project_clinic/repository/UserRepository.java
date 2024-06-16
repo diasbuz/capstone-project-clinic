@@ -20,4 +20,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void updateUserInfoById(Integer userId, String name, String phone, String email);
 
     List<User> findByServiceServiceId(Integer serviceId);
+
+    @Query("SELECT u FROM User u WHERE u.role = 'ROLE_DOCTOR'")
+    List<User> findAllDoctors();
+
+    @Query("SELECT u FROM User u WHERE u.role = 'DOCTOR' " +
+            "AND (:name IS NULL OR u.name LIKE %:name%) " +
+            "AND (:specialization IS NULL OR u.service.name = :specialization) " +
+            "AND (:rating IS NULL OR u.rating >= :rating)")
+    List<User> findFilteredDoctors(String name, String specialization, Double rating);
 }

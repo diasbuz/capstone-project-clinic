@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments - Online Clinic</title>
+    <link rel="stylesheet" th:href="@{/styles/css/comments.css}">
+</head>
+<body>
+<header>
+    <h1>Comments for Dr. <span th:text="${doctor.name}">[Doctor Name]</span></h1>
+</header>
+<main>
+    <section class="comments-section">
+        <h2>Comments</h2>
+        <div th:if="${comments.size() > 0}" th:each="comment : ${comments}" class="comment-panel">
+            <p th:text="${comment.comment}">Comment</p>
+            <p th:text="'Rating: ' + ${comment.rating}">Rating</p>
+        </div>
+        <p th:if="${comments.size() == 0}">No comments available for this doctor.</p>
+    </section>
+</main>
+<footer>
+    <p>Contact Us: </p>
+    <p>Phone: (123) 456-7890</p>
+    <p>Email: contact@onlineclinic.com</p>
+</footer>
+</body>
+</html>

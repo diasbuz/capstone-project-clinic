@@ -86,4 +86,26 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", login='" + login + '\'' +
+                ", role=" + role +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", rating=" + rating +
+                '}';
+    }
+
+    public Double getAverageRating()
+    {
+        if(doctorReviews == null || doctorReviews.isEmpty())
+        {
+            return Double.NaN;
+        }
+        return doctorReviews.stream().mapToDouble(DoctorReview::getRating).sum();
+    }
 }
