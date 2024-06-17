@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
+
+    <changeSet id="create users table" author="Dias Buzanov">
+        <sql>
+            create table users
+              (
+                  user_id    serial
+                      primary key,
+                  login      varchar(50)  not null
+                      unique,
+                  password   varchar(100) not null,
+                  role       varchar(100) not null,
+                  name       varchar(100),
+                  phone      varchar(20),
+                  email      varchar(100),
+                  service_id integer
+                      references services,
+                  rating     double precision,
+                  balance    integer
+              )
+              </sql>
+    </changeSet>
+
+    <changeSet id="create services table" author="Dias Buzanov">
+        <sql>
+            create table services
+            (
+                service_id  serial
+                    primary key,
+                name        varchar(100),
+                description text
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create roles table" author="Dias Buzanov">
+        <sql>
+            create table roles
+            (
+                role_id   serial
+                    primary key,
+                role_name varchar(50)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create doctor_reviews table" author="Dias Buzanov">
+        <sql>
+            create table doctor_reviews
+            (
+                review_id  serial
+                    primary key,
+                doctor_id  integer not null
+                    references users,
+                patient_id integer not null
+                    references users,
+                rating     double precision,
+                comment    text
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create clinic_reviews table" author="Dias Buzanov">
+        <sql>
+            create table clinic_reviews
+            (
+                clinic_review_id serial
+                    primary key,
+                patient_id       integer not null
+                    references users,
+                review_descr     text,
+                review_title     text
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="create appointments table" author="Dias Buzanov">
+        <sql>
+            create table appointments
+            (
+                appointment_id serial
+                    primary key,
+                doctor_id      integer   not null
+                    references users,
+                patient_id     integer
+                    references users,
+                date_time      timestamp not null,
+                status         varchar(50)
+            )
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
