@@ -6,6 +6,7 @@ import com.diasbuz.capstone_project_clinic.repository.AppointmentRepository;
 import com.diasbuz.capstone_project_clinic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -32,6 +33,7 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
     }
 
+    @Transactional
     public void bookAppointment(Integer appointmentId, Integer patientId) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid appointment ID"));

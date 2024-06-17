@@ -5,6 +5,7 @@ import com.diasbuz.capstone_project_clinic.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +19,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Transactional
     public User saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -39,6 +41,7 @@ public class UserService {
         return userRepository.findByLogin(login);
     }
 
+    @Transactional
     public void updateUserInformation(Integer userId, String name, String phone, String email) {
         userRepository.updateUserInfoById(userId, name, phone, email);
     }
