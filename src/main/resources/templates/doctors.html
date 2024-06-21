@@ -27,7 +27,7 @@
                 <p th:text="'Specialty: ' + ${doctor.service.name}">Specialty</p>
                 <p th:text="'Email: ' + ${doctor.email}">Email</p>
                 <p th:text="'Phone: ' + ${doctor.phone}">Phone</p>
-                <p th:text="'Rating: ' + ${doctor.rating}">Rating</p>
+                <p th:text="'Rating: ' + ${doctor.getAverageRating()}">Rating</p>
                 <a th:href="@{/services/doctors/{serviceId}/{doctorId}/booking(serviceId=${serviceId}, doctorId=${doctor.userId})}">Book an appointment</a>
             </div>
         </div>

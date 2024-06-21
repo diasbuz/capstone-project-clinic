@@ -1,6 +1,7 @@
 package com.diasbuz.capstone_project_clinic.controller;
 
 
+import com.diasbuz.capstone_project_clinic.model.Roles;
 import com.diasbuz.capstone_project_clinic.model.User;
 import com.diasbuz.capstone_project_clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/register")
@@ -32,7 +35,7 @@ public class RegistrationController {
         User existingUser = userService.findByLogin(user.getLogin());
 
         if(existingUser != null && existingUser.getLogin() != null && !existingUser.getLogin().isEmpty()){
-            result.rejectValue("login", null, "There is already an account registered with this login");
+            result.rejectValue("login", "400", "There is already an account registered with this login");
         }
 
         if(result.hasErrors()){
@@ -40,7 +43,9 @@ public class RegistrationController {
             return "register";
         }
 
+        user.setRole(Roles.ROLE_PATIENT);
+        user.setBalance(BigDecimal.ZERO);
         userService.saveUser(user);
-        return "redirect:/register?success";
+        return "redirect:/login";
     }
 }

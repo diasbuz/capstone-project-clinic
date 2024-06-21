@@ -3,6 +3,7 @@ package com.diasbuz.capstone_project_clinic.controller;
 import com.diasbuz.capstone_project_clinic.model.Service;
 import com.diasbuz.capstone_project_clinic.model.User;
 import com.diasbuz.capstone_project_clinic.repository.ServiceRepository;
+import com.diasbuz.capstone_project_clinic.service.ServiceService;
 import com.diasbuz.capstone_project_clinic.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,13 +19,14 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    //remove repos
     @Autowired
-    private ServiceRepository serviceRepository;
+    private ServiceService serviceService;
 
     @GetMapping
     public String adminPage(Model model) {
         List<User> users = userService.findAll();
-        List<Service> services = serviceRepository.findAll();
+        List<Service> services = serviceService.findAll();
         model.addAttribute("users", users);
         model.addAttribute("services", services);
         return "admin";

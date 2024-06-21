@@ -19,7 +19,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("UPDATE User u SET u.name = :name, u.phone = :phone, u.email = :email WHERE u.userId = :userId")
     void updateUserInfoById(Integer userId, String name, String phone, String email);
 
-    List<User> findByServiceServiceId(Integer serviceId);
+    @Query("SELECT u FROM User u WHERE u.service.serviceId = :serviceId AND u.name IS NOT NULL AND u.phone IS NOT NULL AND u.email IS NOT NULL" )
+    List<User> findByServiceServiceIdAndNotNull(Integer serviceId);
 
     @Query("SELECT u FROM User u WHERE u.role = 'ROLE_DOCTOR'")
     List<User> findAllDoctors();

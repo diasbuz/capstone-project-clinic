@@ -5,16 +5,14 @@ import com.diasbuz.capstone_project_clinic.model.Service;
 import com.diasbuz.capstone_project_clinic.model.User;
 import com.diasbuz.capstone_project_clinic.service.AppointmentService;
 import com.diasbuz.capstone_project_clinic.service.UserService;
-import com.diasbuz.capstone_project_clinic.service.serviceService;
+import com.diasbuz.capstone_project_clinic.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +21,7 @@ import java.util.Map;
 public class ServicesController {
 
     @Autowired
-    private serviceService serviceService;
+    private ServiceService serviceService;
 
     @Autowired
     private UserService userService;
@@ -40,7 +38,7 @@ public class ServicesController {
 
     @GetMapping("/doctors/{serviceId}")
     public String viewDoctors(@PathVariable Integer serviceId, Model model) {
-        List<User> doctors = userService.findDoctorsByServiceId(serviceId);
+        List<User> doctors = userService.findByServiceServiceIdAndNotNull(serviceId);
         model.addAttribute("doctors", doctors);
         model.addAttribute("serviceId", serviceId);
         return "doctors";
@@ -68,7 +66,7 @@ public class ServicesController {
 
             appointmentService.bookAppointment(appointmentId, patient.getUserId());
 
-            model.addAttribute("message", "Appointment successfully booked!");
+            model.addAttribute("message", "Appointment successfully booked");
 
             return "confirm-booking";
         }

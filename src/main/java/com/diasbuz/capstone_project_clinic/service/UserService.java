@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,18 +26,22 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public User findById(Integer doctorId) {
         return userRepository.findById(doctorId).orElse(null);
     }
 
+    @Transactional
     public void deleteById(Integer id) {
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public User findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
@@ -46,19 +51,39 @@ public class UserService {
         userRepository.updateUserInfoById(userId, name, phone, email);
     }
 
-    public List<User> findDoctorsByServiceId(Integer serviceId) {
-        return userRepository.findByServiceServiceId(serviceId);
+    @Transactional(readOnly = true)
+    public List<User> findByServiceServiceIdAndNotNull(Integer serviceId) {
+        return userRepository.findByServiceServiceIdAndNotNull(serviceId);
     }
 
-    public List<User> findDoctors(String name, String specialization, Double rating) {
-        if (name == null && specialization == null && rating == null) {
-            return userRepository.findAllDoctors();
-        } else {
-            return userRepository.findFilteredDoctors(name, specialization, rating);
-        }
-    }
+//    @Transactional(readOnly = true)
+//    public List<User> findDoctors(String name, String specialization, Double rating) {
+//        if (name == null && specialization == null && rating == null) {
+//            return userRepository.findAllDoctors();
+//        } else {
+//            return userRepository.findFilteredDoctors(name, specialization, rating);
+//        }
+//    }
 
+    @Transactional(readOnly = true)
     public List<User> findAllDoctors() {
         return userRepository.findAllDoctors();
+    }
+
+    @Transactional
+    public void topUpBalance(Integer userId, BigDecimal amount) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setBalance(user.getBalance().add(amount));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void deductBalance(Integer userId, BigDecimal amount) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (user.getBalance().compareTo(amount) < 0) {
+            throw new IllegalArgumentException("Insufficient balance");
+        }
+        user.setBalance(user.getBalance().subtract(amount));
+        userRepository.save(user);
     }
 }

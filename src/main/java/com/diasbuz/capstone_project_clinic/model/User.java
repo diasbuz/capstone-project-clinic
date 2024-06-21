@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 
@@ -54,8 +55,8 @@ public class User implements UserDetails {
     @Column(name = "rating")
     private Double rating;
 
-    @Column(name = "balance")
-    private Integer balance;
+    @Column(name = "balance", precision = 15, scale = 2)
+    private BigDecimal balance;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -104,7 +105,7 @@ public class User implements UserDetails {
     {
         if(doctorReviews == null || doctorReviews.isEmpty())
         {
-            return Double.NaN;
+            return 0.0;
         }
         return doctorReviews.stream().mapToDouble(DoctorReview::getRating).sum();
     }

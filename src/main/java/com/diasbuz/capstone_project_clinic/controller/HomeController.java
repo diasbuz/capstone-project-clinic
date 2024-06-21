@@ -3,15 +3,13 @@ package com.diasbuz.capstone_project_clinic.controller;
 import com.diasbuz.capstone_project_clinic.model.Service;
 import com.diasbuz.capstone_project_clinic.model.User;
 import com.diasbuz.capstone_project_clinic.service.UserService;
-import com.diasbuz.capstone_project_clinic.service.serviceService;
+import com.diasbuz.capstone_project_clinic.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
@@ -23,7 +21,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
     @Autowired
-    private com.diasbuz.capstone_project_clinic.service.serviceService serviceService;
+    private ServiceService serviceService;
 
     @GetMapping(value = {"/", "/home"})
     public String home(@AuthenticationPrincipal User user, Model model) {

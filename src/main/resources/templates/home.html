@@ -13,7 +13,7 @@
 <nav>
     <ul id="nav-buttons">
         <li><a href="/">Home</a></li>
-        <li th:if="${role != 'DOCTOR'}"><a href="/services">Medical Services</a></li>
+        <li th:if="${role != 'ROLE_DOCTOR'}"><a href="/services">Medical Services</a></li>
         <li><a href="/specialists">Specialists</a></li>
         <li><a href="/reviews">Reviews</a></li>
         <li style="float: right;" th:if="${role == null}"><a id="login" href="/login">Log In</a></li>

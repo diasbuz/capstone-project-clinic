@@ -5,6 +5,11 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.15.xsd">
 
     <changeSet id="create users table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="users"/>
+            </not>
+        </preConditions>
         <sql>
             create table users
               (
@@ -26,6 +31,11 @@
     </changeSet>
 
     <changeSet id="create services table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="services"/>
+            </not>
+        </preConditions>
         <sql>
             create table services
             (
@@ -38,6 +48,11 @@
     </changeSet>
 
     <changeSet id="create roles table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="roles"/>
+            </not>
+        </preConditions>
         <sql>
             create table roles
             (
@@ -49,6 +64,11 @@
     </changeSet>
 
     <changeSet id="create doctor_reviews table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="doctor_reviews"/>
+            </not>
+        </preConditions>
         <sql>
             create table doctor_reviews
             (
@@ -65,6 +85,11 @@
     </changeSet>
 
     <changeSet id="create clinic_reviews table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="clinic_reviews"/>
+            </not>
+        </preConditions>
         <sql>
             create table clinic_reviews
             (
@@ -79,6 +104,11 @@
     </changeSet>
 
     <changeSet id="create appointments table" author="Dias Buzanov">
+        <preConditions  onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="appointments"/>
+            </not>
+        </preConditions>
         <sql>
             create table appointments
             (

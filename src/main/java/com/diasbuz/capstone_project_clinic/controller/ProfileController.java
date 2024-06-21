@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -81,10 +82,6 @@ public class ProfileController {
             }
         }
 
-        if (result.hasErrors()) {
-            return "add-doctor";
-        }
-
         user.setRole(Roles.ROLE_DOCTOR);
 
         userService.saveUser(user);
@@ -105,9 +102,16 @@ public class ProfileController {
     @PostMapping("/create-appointment")
     public String createAppointment(@RequestParam("appointmentDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                     @RequestParam("appointmentTime") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime time,
-                                    @AuthenticationPrincipal User doctor) {
+                                    @AuthenticationPrincipal User doctor, Model model) {
         if (!doctor.getRole().equals(Roles.ROLE_DOCTOR)) {
             return "redirect:/profile?error=Unauthorized";
+        }
+
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+
+        if (appointmentService.isAppointmentSlotTaken(doctor, dateTime)) {
+            model.addAttribute("error", "Appointment slot already taken.");
+            return "profile";
         }
 
         Appointment appointment = new Appointment();
@@ -119,14 +123,9 @@ public class ProfileController {
         return "redirect:/profile";
     }
 
-    @GetMapping("/patient/appointments")
-    public String showPatientAppointments(@AuthenticationPrincipal User patient, Model model) {
-        if (!patient.getRole().equals(Roles.ROLE_PATIENT)) {
-            return "redirect:/profile?error=Unauthorized";
-        }
-        List<Appointment> appointments = appointmentService.findByPatient(patient);
-        model.addAttribute("appointments", appointments);
-        return "appointments";
+    @PostMapping("/top-up-balance")
+    public String topUpBalance(@RequestParam("amount") BigDecimal amount, @AuthenticationPrincipal User currentUser) {
+        userService.topUpBalance(currentUser.getUserId(), amount);
+        return "redirect:/profile";
     }
 }
-
