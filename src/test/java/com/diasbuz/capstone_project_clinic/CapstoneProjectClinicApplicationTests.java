@@ -11,5 +11,3 @@ class CapstoneProjectClinicApplicationTests {
 	}
 
 }
-
-//unit tests, integration tests

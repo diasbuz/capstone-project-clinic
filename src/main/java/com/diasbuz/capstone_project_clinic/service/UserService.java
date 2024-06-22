@@ -86,4 +86,14 @@ public class UserService {
         user.setBalance(user.getBalance().subtract(amount));
         userRepository.save(user);
     }
+
+    @Transactional(readOnly = true)
+    public User findUserByEmail(String email) {
+        List<User> users = userRepository.findByEmail(email);
+        if (users.isEmpty()) {
+            return null;
+        } else {
+            return users.getFirst();
+        }
+    }
 }

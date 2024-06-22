@@ -16,6 +16,7 @@
         <div th:each="service : ${servicesWithDoctorCount}" class="service-panel">
             <h3 th:text="${service.getKey().getName()}">Service Name</h3>
             <p>Number of Doctors: <span th:text="${service.getValue()}">0</span></p>
+            <p>Service will cost 50$</p>
             <a th:href="@{/services/doctors/{serviceId}(serviceId=${service.getKey().getServiceId()})}">View Doctors</a>
         </div>
     </section>

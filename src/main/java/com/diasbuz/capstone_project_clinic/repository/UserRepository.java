@@ -19,15 +19,13 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("UPDATE User u SET u.name = :name, u.phone = :phone, u.email = :email WHERE u.userId = :userId")
     void updateUserInfoById(Integer userId, String name, String phone, String email);
 
-    @Query("SELECT u FROM User u WHERE u.service.serviceId = :serviceId AND u.name IS NOT NULL AND u.phone IS NOT NULL AND u.email IS NOT NULL" )
+    @Query("SELECT u FROM User u " +
+            "WHERE u.service.serviceId = :serviceId AND u.name IS NOT NULL AND u.phone IS NOT NULL AND u.email IS NOT NULL" )
     List<User> findByServiceServiceIdAndNotNull(Integer serviceId);
 
     @Query("SELECT u FROM User u WHERE u.role = 'ROLE_DOCTOR'")
     List<User> findAllDoctors();
 
-    @Query("SELECT u FROM User u WHERE u.role = 'DOCTOR' " +
-            "AND (:name IS NULL OR u.name LIKE %:name%) " +
-            "AND (:specialization IS NULL OR u.service.name = :specialization) " +
-            "AND (:rating IS NULL OR u.rating >= :rating)")
-    List<User> findFilteredDoctors(String name, String specialization, Double rating);
+    @Query("SELECT u FROM User u WHERE u.email = :email")
+    List<User> findByEmail(String email);
 }

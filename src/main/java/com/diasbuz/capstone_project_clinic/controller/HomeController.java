@@ -27,6 +27,7 @@ public class HomeController {
     public String home(@AuthenticationPrincipal User user, Model model) {
         if (user != null) {
             model.addAttribute("role", user.getAuthorities().iterator().next().getAuthority());
+            model.addAttribute("user", user);
         } else {
             model.addAttribute("role", null);
         }

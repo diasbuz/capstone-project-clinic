@@ -23,7 +23,8 @@
                         th:text="${#temporals.format(appointment.dateTime, 'yyyy/MM/dd HH:mm EEEE')}">
                 </option>
             </select>
-        <button type="submit" name="appointmentId">Book</button>
+        <button type="submit" name="appointmentId" th:if="${balance>=50}">Book</button>
+
     </div>
     <input type="hidden" name="doctorId" th:value="${doctor.userId}" />
     <input type="hidden" name="serviceId" th:value="${serviceId}" />

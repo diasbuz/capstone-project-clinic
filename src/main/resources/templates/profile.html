@@ -18,7 +18,7 @@
         <li><a href="/reviews">Reviews</a></li>
         <li style="float: right;"><a id="logout" href="/logout">Log Out</a></li>
         <li style="float: right;"><a id="profile" href="/profile">My Profile</a></li>
-        <li style="float: right;"><a id="balance">Balance: $<span th:text="${user.balance}">0.00</span></a></li>
+        <li style="float: right;"><a id="balance">Balance: <span th:text="${user.getBalance()}"></span>$</a></li>
     </ul>
 </nav>
 <main>
@@ -53,6 +53,9 @@
 
     <section class="profile-section" th:if="${role == 'ROLE_DOCTOR'}">
         <h2>Create Appointments</h2>
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
         <form th:action="@{/profile/create-appointment}" method="post">
             <label for="appointment-date">Date:</label>
             <input type="date" id="appointment-date" name="appointmentDate" required>

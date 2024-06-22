@@ -110,8 +110,11 @@ public class ProfileController {
         LocalDateTime dateTime = LocalDateTime.of(date, time);
 
         if (appointmentService.isAppointmentSlotTaken(doctor, dateTime)) {
-            model.addAttribute("error", "Appointment slot already taken.");
-            return "profile";
+            model.addAttribute("error", "There is already an appointment registered at this time");
+            model.addAttribute("user", doctor);
+            model.addAttribute("role", doctor.getAuthorities().iterator().next().getAuthority());
+            model.addAttribute("services", serviceRepository.findAll());
+            return "/profile";
         }
 
         Appointment appointment = new Appointment();

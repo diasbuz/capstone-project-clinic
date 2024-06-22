@@ -8,6 +8,7 @@ import com.diasbuz.capstone_project_clinic.service.UserService;
 import com.diasbuz.capstone_project_clinic.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,19 +46,19 @@ public class ServicesController {
     }
 
     @GetMapping("/doctors/{serviceId}/{doctorId}/booking")
-    public String bookAppointment(@PathVariable Integer doctorId, @PathVariable Integer serviceId, Model model) {
+    public String bookAppointment(@PathVariable Integer doctorId, @PathVariable Integer serviceId, Model model,
+                                  @AuthenticationPrincipal User user) {
         User doctor = userService.findById(doctorId);
         List<Appointment> availableAppointments = appointmentService.getAvailableAppointments(doctorId);
         model.addAttribute("doctor", doctor);
         model.addAttribute("serviceId", serviceId);
         model.addAttribute("availableAppointments", availableAppointments);
+        model.addAttribute("balance", user.getBalance());
         return "booking";
     }
 
     @PostMapping("/confirm-booking")
     public String confirmBooking(@RequestParam Integer appointmentId,
-                                 @RequestParam Integer doctorId,
-                                 @RequestParam Integer serviceId,
                                  Model model)
         {
 

@@ -38,6 +38,11 @@ public class RegistrationController {
             result.rejectValue("login", "400", "There is already an account registered with this login");
         }
 
+        User existingUser2 = userService.findUserByEmail(user.getEmail());
+        if(existingUser2 != null && existingUser2.getEmail() != null && !existingUser2.getEmail().isEmpty()){
+            result.rejectValue("email", "400", "There is already an account registered with this email");
+        }
+
         if(result.hasErrors()){
             model.addAttribute("user", user);
             return "register";
